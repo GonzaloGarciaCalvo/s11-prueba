@@ -17,7 +17,6 @@ import {
 import { Input } from "./Input";
 import Logo from "../../assets/brandLogo.jpg"
 import Link from "next/link";
-import { useRegister } from "./useRegister";
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
 
