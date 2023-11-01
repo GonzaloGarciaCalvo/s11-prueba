@@ -62,6 +62,7 @@ const initialState:stateType = useMemo(
 	if (typeof window !== 'undefined') {
 		// Tu lógica de localStorage aquí
 		const localStorageData = window.localStorage.getItem("garden-wise-user")
+		console.log("LS: ", localStorageData)
 		if (localStorageData) {
 			userFromLs = JSON.parse(localStorageData)
 		  console.log("userFromLs en profile: ",userFromLs)
@@ -73,7 +74,7 @@ const initialState:stateType = useMemo(
 
   const [userState, setUserState] = useState(userFromLs === null
 		? null
-		: JSON.parse(userFromLs))
+		: userFromLs)
 /* 	const [name, setName] = useState("")
 	const [email,setEmail] = useState("")
 	const [img,setImg] = useState("")
