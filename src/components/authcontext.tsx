@@ -58,12 +58,22 @@ const initialState:stateType = useMemo(
 		initialUserState = initialState
 		console.log("no token")
 	} */
-	const localStorageData = window.localStorage.getItem("garden-wise-user")
+	let userFromLs;
+	if (typeof window !== 'undefined') {
+		// Tu lógica de localStorage aquí
+		const localStorageData = window.localStorage.getItem("garden-wise-user")
+		if (localStorageData) {
+			userFromLs = JSON.parse(localStorageData)
+		  console.log("userFromLs en profile: ",userFromLs)
+	  }
+	}
+
+	/* const localStorageData = window.localStorage.getItem("garden-wise-user") */
 
 
-  const [userState, setUserState] = useState(localStorageData === null
+  const [userState, setUserState] = useState(userFromLs === null
 		? null
-		: JSON.parse(localStorageData))
+		: JSON.parse(userFromLs))
 /* 	const [name, setName] = useState("")
 	const [email,setEmail] = useState("")
 	const [img,setImg] = useState("")
