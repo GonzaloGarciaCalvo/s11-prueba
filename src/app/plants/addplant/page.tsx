@@ -67,7 +67,7 @@ function AddPlant() {
 				console.log("Post");
 				console.log("response", response.data);
 				reset();
-				router.push("/plants");
+				/* router.push("/plants"); */
 			} else {
 				console.error("Error en la solicitud:", response.statusText);
 			}
