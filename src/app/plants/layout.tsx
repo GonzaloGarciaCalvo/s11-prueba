@@ -1,6 +1,6 @@
 "use client";
 import { ReactElement, useContext, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { AuthContext } from "@/components/authcontext";
 
 type User = {
@@ -35,9 +35,12 @@ const Layout = ({ children }: { children: ReactElement }) => {
 	},[]) */
 
 	const router = useRouter()
+	useEffect( () =>{
 		if(!userState?.token) {
-			router.push("/login")
+			redirect("/login")
+			/* router.push("/login") */
 		}
+	},[])
 
 	return (
 		<>
