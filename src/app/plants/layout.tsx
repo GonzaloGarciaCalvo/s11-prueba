@@ -2,6 +2,7 @@
 import { ReactElement, useContext, useEffect } from "react";
 import { redirect, useRouter } from "next/navigation";
 import { AuthContext } from "@/components/authcontext";
+import Footer from "@/components/footer";
 
 type User = {
 	name:string,
@@ -45,6 +46,7 @@ const Layout = ({ children }: { children: ReactElement }) => {
 	return (
 		<>
 			<div>{children}</div>
+			<Footer />
 		</>
 	);
 };

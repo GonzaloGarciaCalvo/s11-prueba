@@ -24,6 +24,7 @@ import Header from '@/components/header';
 import CreateReminderModal from './createReminderModal';
 import axiosInstance from '@/services/axiosInstance';
 import Link from 'next/link';
+import Footer from '@/components/footer';
 
 
 
@@ -216,15 +217,16 @@ const { userState} = useContext(AuthContext);
       </div>
       <section className='flex justify-center items-center mt-10'>
 
-      <Link href={'/calendar'}>Calendario
-      {/* <button onClick={() => setOpenModal(true)} className='p-3 bg-secondary text-slate-100 rounded-md m-auto'> */}
+    
+       {/* <button onClick={() => setOpenModal(true)} className='p-3 bg-secondary text-slate-100 rounded-md m-auto'> 
           Agregar Recordatorio
           <svg xmlns="http://www.w3.org/2000/svg" className='inline' width="26" height="24" viewBox="0 0 26 24" fill="none">
             <path d="M13.2344 6V12M13.2344 12V18M13.2344 12H19.4639M13.2344 12H7.00488" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
-        {/* </button> */}
-        </Link>
+        </button> */}
+      
       </section>
+      <Footer />
     </div>
   )
 }

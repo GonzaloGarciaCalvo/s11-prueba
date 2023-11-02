@@ -101,7 +101,15 @@ export default function Register() {
 				}})
 					
 				.then(res => res.data)
-				.then(data => console.log("data",data))
+				.then(data => {
+					console.log("data",data)
+					console.log("data.status : ", data.status)
+					if (data.status === "success") {
+						console.log("en success");
+
+						router.push("/login");
+					}
+				})
 				.catch((error) => { console.log(error)})
 
 			/* try {
@@ -130,9 +138,9 @@ export default function Register() {
 		}
 		submitRegister()
 
-		if (userData) {  
+		/* if (userData?.token) {  
 			router.push("/login")
-		}
+		} */
 	};
 
 	const onInvalid: SubmitHandler<InputVali<typeof RegisterSchema>> = (error) => {

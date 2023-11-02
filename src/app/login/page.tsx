@@ -22,7 +22,7 @@ import { Input } from "./Input";
 import { AuthContext } from "@/components/authcontext";
 import Logo from "../../assets/brandLogo.jpg"
 import Link from "next/link";
-import FadeLoader from "react-spinners/FadeLoader";
+import BarLoader from "react-spinners/BarLoader";
 
 /* type inputState = {
 	value: string;
@@ -101,15 +101,7 @@ export default function Login() {
 				email:email,
 				password: password
 			})
-			// fetch("https://garden-wise-app.fly.dev/api/register", {
-			// 		method: "POST", 
-			// 	headers: {
-			// 		"content-type":"aplication/json",
-			// 	},
-			// 	body:JSON.stringify(bodyData) // a cambiar cuando se tenga los keys requeridos en el endpoint
-			// 	})
-			// 	.then(res => res.json())
-			// 	.then(data => console.log("data",data))
+
 
 
 			try {
@@ -126,6 +118,7 @@ export default function Login() {
 				setUserData(requestedData)
 				const user = {
 					name:requestedData.data.user.name,
+					lastname:requestedData.data.user.lastname,
 					email:requestedData.data.user.email,
 					img:requestedData.data.user.img,
 					token:requestedData.data.token,
@@ -134,10 +127,7 @@ export default function Login() {
 				}
 
 				if (requestedData.status === "success") {  // cambiar por user cuando tome del customhook
-								/* await dispatchUser({
-									type:"LOGIN-CREDENTIALS", 
-									payload: user
-								}) */
+
 								await loginUser(user)
 								console.log("ESTADO del context EN THEN: ", userState )
 								router.push("/plants")
@@ -167,7 +157,7 @@ export default function Login() {
 				<Image src={Logo} alt="logo de Garden Wise" className="pb-[2em] w-[15.5em] h-[auto]  "/>
 				<p>Donde la Naturaleza y la Tecnología Se Unen</p>
 			</div>
-			<div className="flex flex-col w-full lg:w-1/2 registerBgImg">
+			<div className="flex flex-col w-full lg:w-1/2 registerBgImg relative">
 				{/* <Image src={registerTop} className="w-[8em]" alt="plant image"/> */}
 				<h1 className="text-center text-4xl font-Poppins font-medium mt-16 mb-24  text-[#61B78E]">
 					Iniciar sesión
@@ -203,7 +193,7 @@ export default function Login() {
 					>
 						iniciar sesión
 					</button>
-					<FadeLoader loading={loading} className="absolute bottom-[5em] z-10" /* cssOverride={override} */ /> 
+					<BarLoader loading={loading} className="absolute bottom-[3em] z-10" /* cssOverride={override} */ /> 
 				</form>
 				<Image src={registerFooter} className="w-full pt-24" alt="plant image" />
 			</div>

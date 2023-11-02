@@ -4,6 +4,7 @@ import {  createContext, ReactNode, useCallback, useContext, useMemo, useState} 
 
 type stateType = {
 	name:string,
+	lastname:string,
 	email:string,
 	img:string,
 	token:string,
@@ -35,7 +36,8 @@ export const AuthContextProvider = ({children}: {children: ReactNode}) => {
 
 const initialState:stateType = useMemo(
 	() => ({
-		name:"",
+	name:"",
+	lastname:"",
 	email:"",
 	img:"",
 	token:"",
@@ -57,11 +59,12 @@ const initialState:stateType = useMemo(
 		: userFromLs)
 
   const loginUser =useCallback( (user:stateType) => {
-		const { name, email, img, token, id} = user
+		const { name, lastname ,email, img, token, id} = user
 				console.log("loginUser, user: ", user)
 				setUserState ({
 					...userState, 
 					name:name,
+					lastname:lastname,
           email:email,
 					img:img,
 					token:token,
@@ -71,11 +74,12 @@ const initialState:stateType = useMemo(
 	},[])
 
 	const logOutUser =useCallback( (user:stateType) => {
-		const { name, email, img, token, id} = user
+		const { name,lastname, email, img, token, id} = user
 				console.log("loginUser, user: ", user)
 				setUserState ({
 					...userState, 
 					name:"",
+					lastname:"",
           email:"",
 					img:"",
 					token:"",
