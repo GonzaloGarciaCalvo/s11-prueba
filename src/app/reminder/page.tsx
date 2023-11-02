@@ -15,17 +15,20 @@ export default function CreateReminderModal({setOpenModal}:any) {
   const [choosedTime, setChoosedTime] = useState()
   const [plants, setPlants] = useState<[any] | []>([])
   const router = useRouter();
+  
   useEffect(() => {
     axiosInstance
         .get("/plants/")
         .then((response) => {
             console.log(response);
-            setPlants(response.data.data);
+            setPlants(response.data.data); 
         })
         .catch((error) => {
             console.error("Error al obtener datos de plantas:", error);
         });
 }, []);
+
+	
   const handleChange = (newValue:any) => {
     if(newValue.target.name === 'planta') {
       
@@ -65,7 +68,7 @@ export default function CreateReminderModal({setOpenModal}:any) {
               .post("/reminder/", JSON.stringify(formData))
               .then((response) => {
                   console.log(response);
-                  
+                  router.push("/calendar")
                   reset()
               })
               .catch((error) => {
