@@ -14,7 +14,7 @@ const Header = () => {
 		if (userState?.token) setIsLogged(true)
 
 	},[userState])
-	userState && console.log("userState en Header:",userState)
+
 	// document.addEventListener('click', function(event) {
 	// 	if(isOpen && event.target !== menuRef.current){
 	// 		setIsOpen(false)
@@ -23,11 +23,6 @@ const Header = () => {
 	// })
 	useEffect(() => {
 		
-    /* const handleClickOutside = (event: MouseEvent) => {
-      if (isOpen && menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        setIsOpen(false);
-      }
-    }; */
 		const handleClickOutside = (event: MouseEvent) => {
 			if (isOpen && menuRef.current && !(menuRef.current as HTMLElement).contains(event.target as HTMLElement)) {
 				setIsOpen(false);
