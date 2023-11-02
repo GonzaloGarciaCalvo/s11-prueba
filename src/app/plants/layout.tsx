@@ -1,6 +1,6 @@
 "use client";
 import { ReactElement, useContext, useEffect } from "react";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { AuthContext } from "@/components/authcontext";
 
 type User = {
@@ -13,13 +13,13 @@ type User = {
 
 const Layout = ({ children }: { children: ReactElement }) => {
 	const { userState } = useContext(AuthContext);
-	console.log("userState en Layout plants: ", userState);
+
 	/* if (!userState.token) {
 		console.log("redirecciona");
 		redirect("/login")
 	} */
 
-	useEffect ( () => {
+	/* useEffect ( () => {
 		const retrieveUser = (): User | null | undefined => {
 			if ( typeof window !== undefined) {
 				const userData = localStorage.getItem("garden-wise-user");
@@ -32,7 +32,13 @@ const Layout = ({ children }: { children: ReactElement }) => {
 		if (!isLogged?.token) {
 			redirect("/login")
 		} else console.info("logged");
-	},[])
+	},[]) */
+
+	const router = useRouter()
+		if(!userState?.token) {
+			router.push("/login")
+		}
+
 	return (
 		<>
 			<div>{children}</div>

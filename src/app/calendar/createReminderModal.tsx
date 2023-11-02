@@ -60,7 +60,9 @@ export default function CreateReminderModal({setOpenModal}:any) {
               console.log(response);
               reset()
               setOpenModal(false)
-              location.reload()
+              if (typeof window !== 'undefined') {
+                location.reload()
+              }
           })
           .catch((error) => {
               console.error("Error al obtener datos de plantas:", error);
