@@ -23,6 +23,7 @@ import { redirect } from 'next/navigation';
 import Header from '@/components/header';
 import CreateReminderModal from './createReminderModal';
 import axiosInstance from '@/services/axiosInstance';
+import Link from 'next/link';
 
 
 
@@ -39,7 +40,7 @@ export default function Example() {
   const [reminders, setReminders] = useState<[reminder] | []>([])
   let firstDayCurrentMonth = parse(currentMonth, 'MMM-yyyy', new Date())
   const [openModal ,setOpenModal] = useState(false)
-
+  const [reloadData, setReloadData] = useState(0)
 const { userState} = useContext(AuthContext);
   
 	useEffect( () => {
@@ -68,6 +69,10 @@ const { userState} = useContext(AuthContext);
 		type:string,
 		repeat:number,
 		plant_id:number
+	}
+
+  const handleReloadData = () => {
+		setReloadData(prev => prev +1)
 	}
 
   let days = eachDayOfInterval({
@@ -105,7 +110,7 @@ const { userState} = useContext(AuthContext);
   return (
     <div className=" w-full">
       <Header/>
-      {openModal && <CreateReminderModal setOpenModal={setOpenModal}/>}
+      {/* {openModal && <CreateReminderModal setOpenModal={setOpenModal} handleReloadData={handleReloadData} />} */}
       <div className="w-full pt-10  px-3">
       <h2 className="text-2xl  my-5 text-center text-marron-oscuro   font-medium">Calendario</h2>
         <div className="flex justify-center items-center  md:divide-x md:divide-gray-200">
@@ -211,12 +216,14 @@ const { userState} = useContext(AuthContext);
       </div>
       <section className='flex justify-center items-center mt-10'>
 
-      <button onClick={() => setOpenModal(true)} className='p-3 bg-secondary text-slate-100 rounded-md m-auto'>
+      <Link href={'/calendar'}>Calendario
+      {/* <button onClick={() => setOpenModal(true)} className='p-3 bg-secondary text-slate-100 rounded-md m-auto'> */}
           Agregar Recordatorio
           <svg xmlns="http://www.w3.org/2000/svg" className='inline' width="26" height="24" viewBox="0 0 26 24" fill="none">
             <path d="M13.2344 6V12M13.2344 12V18M13.2344 12H19.4639M13.2344 12H7.00488" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
-        </button>
+        {/* </button> */}
+        </Link>
       </section>
     </div>
   )
