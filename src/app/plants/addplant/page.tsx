@@ -38,7 +38,7 @@ function AddPlant() {
 		const isLogged = retrieveUser();
 		console.log("isLogged: ", isLogged);
 		if (!isLogged?.token) {
-			redirect("/login");
+			/* redirect("/login"); */
 			/* router.push("/login") */
 		} else console.info("not logged");
 	}, []);
