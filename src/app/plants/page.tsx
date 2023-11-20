@@ -37,7 +37,7 @@ function Plants() {
 				console.error("Error al obtener datos de plantas:", error);
 			}); */
     if ( userState?.token ) {
-			axios.get("https://garden-wise-app.fly.dev/api/plants/", 
+			axios.get("https://garden-wise-app.fly.dev/api/plants/",
 				{
 					headers: {
 					"Content-Type": "application/json",
@@ -93,6 +93,7 @@ function Plants() {
 			</section>
 		</>
 	);
+							
 }
 
 export default Plants;
