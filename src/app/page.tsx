@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Header from "@/components/header";
 import CarouselContainer from "@/components/carousel";
-import headerPicture from '@/assets/Rectangle-5677.png'
+import headerPicture from '@/assets/Rectangle-5677.jpg'
 import addPlantPicture from '@/assets/Pebble-People-Plant-3.png'
 import remindersPicture from '@/assets/Allura-Clock.png'
 import calendarPicture from '@/assets/Hands-Calendar.png'
@@ -15,7 +15,7 @@ export default function Home() {
 			<Header />
 			<div className="flex flex-col md:flex-row-reverse md:items-center lg:justify-between">
 			
-				<Image src={headerPicture} className="w-full h-60 md:w-1/2 lg:w-2/5 lg:h-full bg-slate-200 " alt="header" />
+				<Image src={headerPicture} priority className="w-full h-60 md:w-1/2 lg:w-2/5 lg:h-full bg-slate-200 " alt="header" />
 				<p className="mx-7 mt-6 md:mt-0 lg:w-1/3 lg:mx-32 lg:text-xl text-primary text-sm">
 					<strong>Garden Wise </strong>
 					 es la app de <strong>cuidado de plantas</strong>  que revolucionó la forma en que

@@ -1,6 +1,8 @@
-
 "use client"
 import {  createContext, ReactNode, useCallback, useContext, useMemo, useState} from "react";
+import { deleteCookie, getCookie, setCookie } from 'cookies-next'
+import axios from "axios";
+
 
 type stateType = {
 	name:string,
@@ -13,26 +15,13 @@ type stateType = {
 
 type contextType = {
 	userState:stateType,
-	loginUser:()=>{}
+	loginUser:()=>{},
+	logOutUser:()=>{}
 }
 
 export const AuthContext = createContext<any>(null)
 
 export const AuthContextProvider = ({children}: {children: ReactNode}) => {
-	
-	/* const initialState:stateType = {
-		name:"",
-		email:"",
-		img:"",
-		token:"",
-		id:null
-	} */
-	
-
-/* type actionType = {
-	type:string,
-	payload?:stateType 
-} */
 
 const initialState:stateType = useMemo(
 	() => ({
@@ -49,8 +38,14 @@ const initialState:stateType = useMemo(
 	let userFromLs;
 	if (typeof window !== 'undefined') {
 		const localStorageData = window.localStorage.getItem("garden-wise-user")
+		const cookieUser = getCookie("garden-wise-auth")
 		if (localStorageData) {
 			userFromLs = JSON.parse(localStorageData)
+			//La cookie tiene que tener max-age para que el blowser no la borre a cerrar ventana
+			// Borro en cada inicio, borra cookie vieja y setea una nueva.
+			//en local hay error con el atributo SemeSite porque el atributo secure solo puede ser usado por sitio https
+			deleteCookie("garden-wise-auth")
+			setCookie("garden-wise-auth", userFromLs.token, { maxAge: 60*60*24*365, sameSite: "none", secure:true});
 	  }
 	}
 
@@ -60,7 +55,6 @@ const initialState:stateType = useMemo(
 
   const loginUser =useCallback( (user:stateType) => {
 		const { name, lastname ,email, img, token, id} = user
-				console.log("loginUser, user: ", user)
 				setUserState ({
 					...userState, 
 					name:name,
@@ -73,24 +67,63 @@ const initialState:stateType = useMemo(
 				localStorage.setItem("garden-wise-user", JSON.stringify(user))
 	},[])
 
-	const logOutUser =useCallback( (user:stateType) => {
-		const { name,lastname, email, img, token, id} = user
-				console.log("loginUser, user: ", user)
+	const logOutUser =useCallback( async ( router:any) => {
+		
+        try{
+					const response = await axios.post("https://garden-wise-app.fly.dev/api/logout/","", {
+						headers: {
+							"Content-Type": "application/json",
+							"Authorization":`Bearer ${userState.token}`
+						}
+					})
+					const data = await response.data
+						if (data) {
+							localStorage.removeItem("garden-wise-user")
+							deleteCookie("garden-wise-auth");
+							setUserState ({
+								...userState, 
+								name:"",
+								lastname:"",
+								email:"",
+								img:"",
+								token:"",
+								id:null
+							})
+						}
+						/* localStorage.removeItem("garden-wise-user")
+						deleteCookie("garden-wise-auth");
+						setUserState ({
+							...userState, 
+							name:"",
+							lastname:"",
+							email:"",
+							img:"",
+							token:"",
+							id:null
+						}) */
+					router.push("/login")
+				} catch(err:any){
+					console.log(err.message)
+				}
+	},[userState])
+	
+	const [selectedReminder, setSelectedReminder] = useState(null)
+	/* const handleSelectReminder =useCallback( (reminder) => {
+		const { name, lastname ,email, img, token, id} = user
 				setUserState ({
 					...userState, 
-					name:"",
-					lastname:"",
-          email:"",
-					img:"",
-					token:"",
-					id:null
+					name:name,
+					lastname:lastname,
+          email:email,
+					img:img,
+					token:token,
+					id:id
 				})
-				localStorage.removeItem("garden-wise-user")
-	},[])
-	
+	},[]) */
 	const contextValue = useMemo(
     () => ({
       loginUser,
+			logOutUser,
       userState,
     }),
     [userState, loginUser, logOutUser]
@@ -105,67 +138,3 @@ export function useAuthContext() {
 
 
 
-
-// "use client"
-// import {  createContext, useReducer,  ReactNode, useState, use, Dispatch,} from "react";
-
-// type stateType = {
-// 	name:string,
-// 	email:string,
-// 	img:string,
-// 	token:string
-// }
-
-// /* type contextType = {
-// 	userState:stateType,
-// 	dispatchUser:(user:stateType) => void
-// } */
-// /* type contextType = {
-// 	userState:stateType,
-// 	dispatchUser:Dispatch<action>
-// } */
-// export const AuthContext = createContext<any>(null)
-
-
-// export const AuthContextProvider = ({children}: {children: ReactNode}) => {
-	
-// 	const initialState:stateType = {
-// 		name:"",
-// 		email:"",
-// 		img:"",
-// 		token:""
-// 	}
-
-// type actionType = {
-// 	type:string,
-// 	payload?:stateType 
-// }
-
-// 	const authReducer = (state: stateType, action: actionType) => {
-// 		switch (action.type) {
-// 			case "LOGIN-CREDENTIALS":
-// 				const { name, email, img, token} = action.payload!
-// 				console.log("EN REDUCTOR, user: ", state)
-// 				return {
-// 					...state, 
-// 					name:name,
-//           email:email,
-// 					img:img,
-// 					token:token
-// 				}
-// 				case "LOG-OUT":
-// 					return {
-// 						...state, 
-// 						name:"",
-// 						email:"",
-// 						img:"",
-// 						token:""
-// 					}
-// 				default: return { ...state}
-// 		}
-// 	}
-// 	const [userState, dispatchUser] = useReducer<any>(authReducer, initialState)
-// 	const contextValue = {userState, dispatchUser}
-//   console.log("userState en context: ", userState)
-// 	return <AuthContext.Provider value={contextValue} >{children}</AuthContext.Provider>
-// }

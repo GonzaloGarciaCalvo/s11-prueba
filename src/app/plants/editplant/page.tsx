@@ -1,7 +1,11 @@
+import { AuthContext } from "@/components/authcontext";
+import { useContext } from "react";
+
 const page = () => {
-  return (
-    <div>page</div>
-  )
+
+	const { userState} = useContext(AuthContext);
+	return (
+		<div>page</div>
+	)
 }
 export default page
-
