@@ -20,6 +20,7 @@ import { AuthContext } from '@/components/authcontext';
 import Header from '@/components/header';
 import axiosInstance from '@/services/axiosInstance';
 import Footer from '@/components/footer';
+import { clsx } from "clsx";
 
 function classNames(...classes:any) {
   return classes.filter(Boolean).join(' ')
@@ -39,6 +40,11 @@ type reminder = {
   const [openModal ,setOpenModal] = useState(false)
 
 const { userState} = useContext(AuthContext);
+
+let sizeOfScreen
+if (typeof window !== 'undefined') {
+	sizeOfScreen = window.innerWidth
+}
   
 	useEffect( () => {
 			getReminders()
@@ -102,12 +108,15 @@ const { userState} = useContext(AuthContext);
   return (
 		<div className=" w-full">
 			<Header />
-			<div className="w-full pt-10">
+			<div className="w-full pt-10 min-h-[100vh] flex flex-col">
 				<h2 className="text-2xl  my-5 text-center text-marron-oscuro   font-medium">
 					Calendario
 				</h2>
-				<div className="flex justify-center items-center  md:divide-x md:divide-gray-200 pb-10">
-					<div className="w-2/3">
+				<div className={
+					clsx("flex justify-center items-center  md:divide-x md:divide-gray-200 pb-10",sizeOfScreen &&  "overflow-scroll")
+				  }
+				>
+					<div className="w-11/12 md:w-2/3">
 						<div className="flex w-full items-center justify-center bg-secondary h-10">
 							<button
 								type="button"
@@ -129,7 +138,7 @@ const { userState} = useContext(AuthContext);
 								<AiOutlineRight className="w-5 h-5" aria-hidden="true" />
 							</button>
 						</div>
-						<div className="grid grid-cols-7  text-xs leading-6 text-center text-gray-500">
+						<div className="grid grid-cols-7 text-[0.65em]  md-text-xs leading-6 text-center text-gray-500">
 							<div className="border border-black">Domingo</div>
 							<div className="border border-black">Lunes</div>
 							<div className="border border-black">Martes</div>
@@ -138,7 +147,7 @@ const { userState} = useContext(AuthContext);
 							<div className="border border-black">Viernes</div>
 							<div className="border border-black">Sabado</div>
 						</div>
-						<div className="grid grid-cols-7 text-sm w-[100%]  ">
+						<div className="grid grid-cols-7 text-[0.7em] md:text-sm w-[100%]  ">
 							{days.map((day, dayIdx) => (
 								<div
 									key={day.toString()}
@@ -190,7 +199,7 @@ const { userState} = useContext(AuthContext);
 													"mx-auto flex h-6 w-6 m-2 items-center justify-center rounded-full"
 												)}
 											>
-												<time dateTime={format(day, "yyyy-MM-dd")}>
+												<time className="text-[0.6em] md:text-sm" dateTime={format(day, "yyyy-MM-dd")}>
 													{format(day, "d")}{" "}
 													{/* este es el  numero de dia del mes */}
 													{/* {checkEvent(day) && day.toString()} */}
@@ -205,7 +214,7 @@ const { userState} = useContext(AuthContext);
 						</div>
 					</div>
 				</div>
-				<Footer />
+				<Footer  />
 			</div>
 		</div>
 	);

@@ -91,8 +91,12 @@ useEffect(() => {
 
 		console.log(formData);
 		
-		axiosInstance
-		.post("/reminder/", JSON.stringify(formData))
+		axios.post("/reminder", formData, {
+			headers: {
+			"Content-Type": "application/json",
+			"Authorization":`Bearer ${userState.token}`
+		}
+	  }) 
 		.then((response) => {
 				console.log("response: ",response);	
 				if (response.status === 201 || response.status === 200) {
@@ -105,6 +109,7 @@ useEffect(() => {
 						timer:3000
 					})
 				} else {
+					setOpenModal(false)
 					Swal.fire({
 						title: 'Error!',
 						text: 'No se pudo crear el recordatorio',
@@ -129,17 +134,17 @@ useEffect(() => {
 
 
   return (
-    <article className='fixed inset-0 py-24  z-50 w-screen flex justify-center items-center content-center bg-black bg-opacity-30'>
-      <div className='bg-background  px-10 py-10 my-24 rounded-md'>
+    <article className='fixed inset-0  z-50 w-screen flex flex-col  items-center   bg-black bg-opacity-30'>
+      <div className='bg-background  px-10 py-2  rounded-md'>
 				<h2 className='text-marron-oscuro font-semibold text-center   text-xl'>Recordatorios</h2>
-				<form onSubmit={handleSubmit(onSubmit,onErrors )} className='py-96' >
-					<label htmlFor="tipo" className="block mt-5">
+				<form onSubmit={handleSubmit(onSubmit,onErrors )} className='mt-2 pb-2' >
+					<label htmlFor="tipo" className="block">
 						Ambiente*
 					</label>
 					<select
 						id="tipo"
 						{...register("name",  { required: true })} 
-						className="px-4 py-3 w-[289px] border-2 rounded-lg block border-zinc-500 focus:outline-none focus:border-[#2DD4BF]"
+						className="px-4 py-2 w-[289px] border-2 rounded-lg block border-zinc-500 focus:outline-none focus:border-[#2DD4BF]"
 					>
 						<option value="" >Elige una opción</option>
 						<option value="Riego">Riego</option>
@@ -154,13 +159,13 @@ useEffect(() => {
 					<select
 						id="planta"
 						{...register("plant_id",  { required: true })}
-						className="px-4 py-3 w-[289px] border-2 rounded-lg block border-zinc-500 focus:outline-none focus:border-[#2DD4BF]"
+						className="px-4 py-2 w-[289px] border-2 rounded-lg block border-zinc-500 focus:outline-none focus:border-[#2DD4BF]"
 					>
 						<option value="" >Elige una opción</option> {/* Mueve esta opción fuera del mapeo */}
 						{plants.length > 0 ? (
 							plants.map((plant, index) => (
 								<option key={index} value={index} > {/* Usar plant.name para el valor */}
-									{`${plant.name}  ${index}`}
+									{`${plant.name}`}
 								</option>
 							))
 						) : (
@@ -172,7 +177,7 @@ useEffect(() => {
 						type="date"
 						{...register("date",  { required: true })}
 						id="fecha"
-						className="px-4 py-3 block w-[289px] border-2 rounded-lg  border-zinc-500 focus:outline-none focus:border-[#2DD4BF]"
+						className="px-4 py-2 block w-[289px] border-2 rounded-lg  border-zinc-500 focus:outline-none focus:border-[#2DD4BF]"
 						placeholder="fecha"
 					/>
 					<label htmlFor="time" className='block mt-5'>Hora*</label>
@@ -180,7 +185,7 @@ useEffect(() => {
 						{...register("time",  { required: true })}
 						type="time" 
 						id="hora" 
-						className="px-4 py-3 block w-[289px] border-2 rounded-lg  border-zinc-500 focus:outline-none focus:border-[#2DD4BF]"
+						className="px-4 py-2 block w-[289px] border-2 rounded-lg  border-zinc-500 focus:outline-none focus:border-[#2DD4BF]"
 					/>
 					<label htmlFor="periodicidad" className="block mt-5">
 						Perodicidad*
@@ -188,7 +193,7 @@ useEffect(() => {
 					<select
 						id="periodicidad"
 						{...register("frequency",  { required: true })}
-						className="px-4 py-3 w-[289px] border-2 rounded-lg block border-zinc-500 focus:outline-none focus:border-[#2DD4BF]"
+						className="px-4 py-2 w-[289px] border-2 rounded-lg block border-zinc-500 focus:outline-none focus:border-[#2DD4BF]"
 					>
 						<option value="">Elige una opción</option> //  con esto se muestra vacio para que el usuario no asuma preseleccionado
 						<option value="Semanalmente">Semanalmente</option>
@@ -196,7 +201,7 @@ useEffect(() => {
 						<option value="Mensualmente">Mensualmente</option>
 						<option value="Anualmente">Anualmente</option>
 					</select>
-					<div className="flex justify-center gap-2 mb-40">
+					<div className="flex justify-center gap-2 pb-6">
 								<button
 									onClick={() => setOpenModal(false)}
 									className="font-semibold  justify-center hover:bg-primary ease-out duration-300 mt-16 w-32 bg-transparent border-2 border-primary text-primary gap-3 items-center flex hover:text-white  px-1 py-1"

@@ -9,18 +9,11 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import { useReminderStore } from './store';
 
-/* interface ModalProps {
-  setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
-  getReminders: () => void;
-}
-
-export default function CreateReminderModal({setOpenModal, getReminders}:ModalProps) { */
-
 export default function EditReminderModal({setEditOpenModal, getReminders}:any) {
   const { userState, logOutUser} = useContext(AuthContext);
   const [plants, setPlants] = useState<[any] | []>([])
   const router = useRouter();
-	const { reminder, selectReminder } = useReminderStore()
+	const { reminder } = useReminderStore()
 
 useEffect(() => {
 
@@ -62,40 +55,50 @@ useEffect(() => {
 	} = useForm({
 		resolver: valibotResolver(ReminderSchema),
 		defaultValues: {
-			name: reminder?.name,
-			frequency: reminder?.frequency,
+			created_at:reminder?.created_at,
 			date: reminder?.date,
+			frequency: reminder?.frequency,
+			id:reminder?.id,
+			name: reminder?.name,
+			plant:reminder?.plant,
+			plant_id: reminder?.plant.name,
+			repeat: 0,
 			time: reminder?.time,
 			type: "Irrigation",
-			repeat: 0,
-			plant_id: reminder?.plant.name // name in order to display the name in the select
+			updated_at:reminder?.updated_at,
+			user_id:reminder?.user_id
 		},
 		
 	});
 
 
 	const onSubmit =  (data:any) => {
-		console.log(parseInt(data.plant_id))
-		console.log("dataForm: ", data)
 		if (data.name === "" || data.plant_id === "" || data.frequency === "") {
 
 		}
 		const formData = {
-			name: data.name,
-			frequency: data.frequency,
+			created_at:reminder?.created_at,
 			date: data.date,
+			frequency: data.frequency,
+			id:reminder?.id,
+			name: data.name,
+			plant:reminder?.plant,
+			plant_id: reminder?.plant.id,
+			repeat: 0,
 			time: data.time,
 			type: "Irrigation",
-			repeat: 0,
-			plant_id: reminder?.plant.id
+			updated_at:reminder?.updated_at,
+			user_id:reminder?.user_id
 		}
 
-		console.log(formData);
-		
-		axiosInstance
-		.put("/reminder/", JSON.stringify(formData)) //put no soportado. head llega ok pero no actualiza datos
+		axios.put("/reminder", formData, {
+			headers: {
+			"Content-Type": "application/json",
+			"Authorization":`Bearer ${userState.token}`
+		}
+	  }) 
 		.then((response) => {
-				console.log("response: ",response);	
+				console.log("response en edit: ",response);	
 				if (response.status === 201 || response.status === 200) {
 					getReminders()
 					setEditOpenModal(false)
@@ -124,23 +127,21 @@ useEffect(() => {
 		const valores = getValues()
 		console.log("valores: ", valores)
 		console.log("onError data: ",data)
-		console.log("fomrData: ", getValues())
-		console.log("typeof valores.plant_id",typeof valores.plant_id)
 	}
-
+	console.log("reminder en edit", reminder)
 
   return (
-    <article className='fixed inset-0 py-24  z-50 w-screen flex justify-center items-center content-center bg-black bg-opacity-30'>
-      <div className='bg-background  px-10 py-10 my-24 rounded-md'>
+    <article className='fixed inset-0 z-50 w-screen flex justify-center items-center content-center bg-black bg-opacity-30'>
+      <div className='bg-background  px-10 py-2  rounded-md'>
 				<h2 className='text-marron-oscuro font-semibold text-center   text-xl'>Recordatorios</h2>
-				<form onSubmit={handleSubmit(onSubmit,onErrors )} className='py-96' >
+				<form onSubmit={handleSubmit(onSubmit,onErrors )} className='mt-5' >
 					<label htmlFor="tipo" className="block mt-5">
 						Ambiente*
 					</label>
 					<select
 						id="tipo"
 						{...register("name",  { required: true })} 
-						className="px-4 py-3 w-[289px] border-2 rounded-lg block border-zinc-500 focus:outline-none focus:border-[#2DD4BF]"
+						className="px-4 py-2 w-[289px] border-2 rounded-lg block border-zinc-500 focus:outline-none focus:border-[#2DD4BF]"
 					>
 						<option value="" >Elige una opción</option>
 						<option value="Riego">Riego</option>
@@ -155,7 +156,7 @@ useEffect(() => {
 					<select
 						id="planta"
 						{...register("plant_id",  { required: true })}
-						className="px-4 py-3 w-[289px] border-2 rounded-lg block border-zinc-500 focus:outline-none focus:border-[#2DD4BF]"
+						className="px-4 py-2 w-[289px] border-2 rounded-lg block border-zinc-500 focus:outline-none focus:border-[#2DD4BF]"
 					>
 						<option> 
 									{`${reminder?.plant.name}`}
@@ -166,7 +167,7 @@ useEffect(() => {
 						type="date"
 						{...register("date",  { required: true })}
 						id="fecha"
-						className="px-4 py-3 block w-[289px] border-2 rounded-lg  border-zinc-500 focus:outline-none focus:border-[#2DD4BF]"
+						className="px-4 py-2 block w-[289px] border-2 rounded-lg  border-zinc-500 focus:outline-none focus:border-[#2DD4BF]"
 						placeholder="fecha"
 					/>
 					<label htmlFor="time" className='block mt-5'>Hora*</label>
@@ -174,7 +175,7 @@ useEffect(() => {
 						{...register("time",  { required: true })}
 						type="time" 
 						id="hora" 
-						className="px-4 py-3 block w-[289px] border-2 rounded-lg  border-zinc-500 focus:outline-none focus:border-[#2DD4BF]"
+						className="px-4 py-2 block w-[289px] border-2 rounded-lg  border-zinc-500 focus:outline-none focus:border-[#2DD4BF]"
 					/>
 					<label htmlFor="periodicidad" className="block mt-5">
 						Perodicidad*
@@ -182,7 +183,7 @@ useEffect(() => {
 					<select
 						id="periodicidad"
 						{...register("frequency",  { required: true })}
-						className="px-4 py-3 w-[289px] border-2 rounded-lg block border-zinc-500 focus:outline-none focus:border-[#2DD4BF]"
+						className="px-4 py-2 w-[289px] border-2 rounded-lg block border-zinc-500 focus:outline-none focus:border-[#2DD4BF]"
 					>
 						<option value="">Elige una opción</option> //  con esto se muestra vacio para que el usuario no asuma preseleccionado
 						<option value="Semanalmente">Semanalmente</option>
@@ -190,7 +191,7 @@ useEffect(() => {
 						<option value="Mensualmente">Mensualmente</option>
 						<option value="Anualmente">Anualmente</option>
 					</select>
-					<div className="flex justify-center gap-2 mb-40">
+					<div className="flex justify-center gap-2 pb-6">
 								<button
 									onClick={() => setEditOpenModal(false)}
 									className="font-semibold  justify-center hover:bg-primary ease-out duration-300 mt-16 w-32 bg-transparent border-2 border-primary text-primary gap-3 items-center flex hover:text-white  px-1 py-1"

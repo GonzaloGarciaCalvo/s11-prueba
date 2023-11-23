@@ -7,15 +7,10 @@ import axiosInstance from '@/services/axiosInstance';
 import Header from '@/components/header';
 import Footer from '@/components/footer';
 import Swal from 'sweetalert2'
+import Image from 'next/image';
 import {
-  format,
-  getDay,
-  isEqual,
-  isSameDay,
 	isSameWeek,
-  isSameMonth,
   isToday,
-  parse,
   parseISO,
 } from 'date-fns'
 import { es} from 'date-fns/locale';
@@ -25,6 +20,7 @@ import BarLoader from 'react-spinners/BarLoader';
 import { reminderType } from './models';
 import CreateReminderModal from './CreateReminderModal';
 import EditReminderModal from './EditReminderModal';
+import Plus from "../../assets/plus.svg"
 
 export default function Reminders() {
   const { userState} = useContext(AuthContext);
@@ -32,23 +28,10 @@ export default function Reminders() {
 	const [todayReminders, setTodayReminders] = useState<reminderType[] | null>(null)
 	const [weekReminders, setWeekReminders] = useState<reminderType[] | null>(null)
 	const [loading, setLoading] = useState(false)
-  //const {register, handleSubmit, reset} = useForm()
 	const [openModal ,setOpenModal] = useState(false)
 	const [openEditModal ,setEditOpenModal] = useState(false)
 
-  //const [plants, setPlants] = useState<[any] | []>([])
   const router = useRouter();
- /*  useEffect(() => {
-    axiosInstance
-        .get("/plants/")
-        .then((response) => {
-            //console.log(response);
-            setPlants(response.data.data);
-        })
-        .catch((error) => {
-            console.error("Error al obtener datos de plantas:", error);
-        });
-}, []); */
 
 	useEffect( () => {
 		if (userState?.token){
@@ -95,10 +78,7 @@ const override: any = {
 	flexDirection:"row",
 	justifyContent:"center"
 };
-/* interface ModalProps {
-  setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
-  getReminders: () => void;
-} */
+
 interface ModalProps {
   setOpenModal?: React.Dispatch<React.SetStateAction<boolean>>;
 	handleEditReminder?: () => void;
@@ -106,43 +86,27 @@ interface ModalProps {
 }
 
   const handleEditReminder = () => {
-		console.log("ejecuta handleEditReminders");
 		setEditOpenModal(true);
 	};
 
   return (
     <>
       <Header />
-      <main className='px-24'>
+      <main className='px-3 sm:px-8 md:px-24'>
 			{openModal && (
 				<CreateReminderModal {...{ setOpenModal, getReminders } as ModalProps} /> 
 			)}
 			{openEditModal && (
 				<EditReminderModal {...{ setEditOpenModal, getReminders } as ModalProps} /> 
 			)}
-			<div className='flex row '>
-				<h1 className='my-10 text-marron-oscuro text-3xl font-semibold'>Recordatorios</h1>
+			<div className='flex flex-col md:flex-row justify-center items-start '>
+				<h1 className='my-10 text-marron-oscuro text-2xl md:text-3xl font-semibold'>Recordatorios</h1>
 				<button
 					onClick={() => setOpenModal(true)}
-					className="p-2 bg-secondary text-slate-100 rounded-md m-auto"
+					className="text-md p-2 bg-secondary text-slate-100 rounded-md m-auto flex flex-row"
 				>
 					Agregar Recordatorio
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						className="inline"
-						width={26}
-						height={26}
-						viewBox="0 0 26 24"
-						fill="none"
-					>
-						<path
-							d="M13.2344 6V12M13.2344 12V18M13.2344 12H19.4639M13.2344 12H7.00488"
-							stroke="white"
-							strokeWidth="2"
-							strokeLinecap="round"
-							strokeLinejoin="round"
-						/>
-					</svg>
+					<Image src={Plus} alt="add icon" width={24} />
 				</button>
 			</div>
 				{loading && (
