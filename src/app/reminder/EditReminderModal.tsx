@@ -1,10 +1,9 @@
 import React, {useEffect, useContext, useState} from 'react'
 import { AuthContext } from '@/components/authcontext';
 import { useRouter } from 'next/navigation';
-import axiosInstance from '@/services/axiosInstance';
 import { valibotResolver } from '@hookform/resolvers/valibot';
 import { SubmitHandler, useForm } from "react-hook-form";
-import {Input as InputVali, minLength, object, required, string, number, minValue} from "valibot";
+import {Input as InputVali, minLength, object,string, number, minValue} from "valibot";
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import { useReminderStore } from './store';
@@ -77,6 +76,7 @@ useEffect(() => {
 
 		}
 		const formData = {
+			_method:"put",
 			created_at:reminder?.created_at,
 			date: data.date,
 			frequency: data.frequency,
@@ -91,7 +91,7 @@ useEffect(() => {
 			user_id:reminder?.user_id
 		}
 
-		axios.put("/reminder", formData, {
+		axios.post("https://garden-wise-app.fly.dev/api/reminder", formData, {
 			headers: {
 			"Content-Type": "application/json",
 			"Authorization":`Bearer ${userState.token}`

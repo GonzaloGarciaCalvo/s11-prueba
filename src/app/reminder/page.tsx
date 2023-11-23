@@ -1,9 +1,7 @@
 "use client"
 import React, {useEffect, useContext, useState} from 'react'
-import { useForm } from 'react-hook-form'
 import { AuthContext } from '@/components/authcontext';
 import { useRouter } from 'next/navigation';
-import axiosInstance from '@/services/axiosInstance';
 import Header from '@/components/header';
 import Footer from '@/components/footer';
 import Swal from 'sweetalert2'

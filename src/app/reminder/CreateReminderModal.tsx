@@ -8,18 +8,11 @@ import {Input as InputVali, minLength, object, required, string, number, minValu
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
-/* interface ModalProps {
-  setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
-  getReminders: () => void;
-}
-
-export default function CreateReminderModal({setOpenModal, getReminders}:ModalProps) { */
 export default function CreateReminderModal({setOpenModal, getReminders}:any) {
   const { userState, logOutUser} = useContext(AuthContext);
-  /* const {register, handleSubmit, reset} = useForm() */
   const [plants, setPlants] = useState<[any] | []>([])
   const router = useRouter();
-
+  console.log("userState en create reminder: ", userState)
 
 useEffect(() => {
 
@@ -41,7 +34,7 @@ useEffect(() => {
 		}) 
 	}
 }, []);
-
+  console.log("plants: ", plants)
 	const ReminderSchema = object({
 		name: string([minLength(1)]),
 		frequency: string([minLength(1)]),
@@ -91,7 +84,7 @@ useEffect(() => {
 
 		console.log(formData);
 		
-		axios.post("/reminder", formData, {
+		axios.post("https://garden-wise-app.fly.dev/api/reminder", formData, {
 			headers: {
 			"Content-Type": "application/json",
 			"Authorization":`Bearer ${userState.token}`
@@ -218,3 +211,4 @@ useEffect(() => {
     </article>
   )
 }
+
