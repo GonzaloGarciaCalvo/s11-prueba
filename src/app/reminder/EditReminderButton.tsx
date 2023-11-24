@@ -7,12 +7,10 @@ const EditReminderButton = ({handleEditReminder, element}:any) => {
 
 	const { reminder, selectReminder } = useReminderStore()
   const handleClick = () => {
-		console.log("handleClick")
 		selectReminder(element)
 		handleEditReminder()
 	}
 	useEffect( () => {
-		console.log("reminder selected: ", reminder)
 	},[reminder])
 
 	return (

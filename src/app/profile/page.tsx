@@ -1,42 +1,14 @@
 "use client"
-import React, { useContext, useState } from 'react'
+import React, { useContext } from 'react'
 import Header from '@/components/header'
 import { AuthContext } from '@/components/authcontext';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import axios from 'axios';
 
-/* type User = {
-	name:string,
-	email:string,
-	img:string,
-	token:string,
-	id:number
-} */
 export default function Page() {
   const router = useRouter()
 	const { userState, logOutUser } = useContext(AuthContext);
-  /* const [user, setUser] = useState<User | null>(null)*/
-
-	/* const handleLogOut = async() => {
-		try {
-			const response = await axios.post("https://garden-wise-app.fly.dev/api/logout/",'', {
-							headers: {
-								"Content-Type": "application/json",
-								"Authorization":`Bearer ${userState.token}`
-							}
-						})
-			const data = await response.data
-			if (data) {
-				logOutUser(userState.token,router)
-			}
-		}
-    catch ( err) {
-			console.log("ERROR: ", err)
-		}
-	} */
-
 	
   return (
     <section className='h-screen '>

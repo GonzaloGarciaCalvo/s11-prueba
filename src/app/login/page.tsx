@@ -9,12 +9,9 @@ import { valibotResolver } from "@hookform/resolvers/valibot";
 import { SubmitHandler, useForm } from "react-hook-form";
 import {
 	Input as InputVali,
-	ValiError,
 	email,
 	minLength,
 	object,
-	parse,
-	required,
 	string,
 	custom,
 } from "valibot";
@@ -22,17 +19,9 @@ import { Input } from "./Input";
 import { AuthContext } from "@/components/authcontext";
 import Logo from "../../assets/brandLogo.jpg"
 import Link from "next/link";
-import FadeLoader from "react-spinners/FadeLoader";
-import BounceLoader from "react-spinners/BounceLoader"
 import BarLoader from "react-spinners/BarLoader"
 import { setCookie } from "cookies-next";
 import Swal from 'sweetalert2'
-/* type inputState = {
-	value: string;
-	isError: boolean;
-	blured: boolean;
-	valid: boolean;
-}; */
 
 const LoginSchema = object({
 	email: string([email("email no valido")]),
@@ -64,53 +53,12 @@ export default function Login() {
 
 	const onSubmit: SubmitHandler<InputVali<typeof LoginSchema>> = (data) => {
 		
-		/* const dataMocked = {
-			name:"Pepe",
-			email:formState.email,
-			img:"ede",
-			token:"1223eijfiri"
-		} */
-		/* const URL = "../src/app/login/data.json" */
-
-		// async function getUser() {
-		// 	try{
-		// 		//
-		// 		const URL = "./data.json"
-		// 		const response = await fetch(URL)
-		// 		const data = await response.json()
-		// 		console.log("data en getUser: ", data)
-		// 		if (data) {  // cambiar por user cuando tome del customhook
-		// 			await dispatchUser({
-		// 				type:"LOGIN-CREDENTIALS", 
-		// 				payload: data
-		// 			})
-		// 			console.log("ESTADO EN THEN: ", userState )
-		// 			/* redirect("/plants") */
-		// 			router.push("/plants")
-		// 		}
-		// 	}catch(err) {console.log(err)}
-		// }
-		// getUser()
-		// console.log("STATE: ", formState.errors)
-
 		const submitLogin = async () => {
-
-			console.log("bodyData: ", )
 			const { email, password} = data
 		const bodyData = ({
 				email:email,
 				password: password
 			})
-			// fetch("https://garden-wise-app.fly.dev/api/register", {
-			// 		method: "POST", 
-			// 	headers: {
-			// 		"content-type":"aplication/json",
-			// 	},
-			// 	body:JSON.stringify(bodyData) // a cambiar cuando se tenga los keys requeridos en el endpoint
-			// 	})
-			// 	.then(res => res.json())
-			// 	.then(data => console.log("data",data))
-
 
 			try {
 				setLoading(true)
@@ -200,9 +148,6 @@ export default function Login() {
 						messageError={errors.password?.message}
 					/>
 					<p className="w-80 lg:w-80 max-w-[80vw] text-end  z-0">¿no tienes cuenta? <span><Link href={'/register'} className="text-primary">Registrate</Link></span></p>
-					{/* <FadeLoader loading={loading}  cssOverride={override} width={7} height={72} radius={10} /> */}
-					{/* <BounceLoader loading={loading}  cssOverride={override} width={7} height={72} />
-					 */}
 					<button
 						className=" w-72 h-10 border-2 bg-primary text-[white] rounded-[20px] mt-5 relative z-20 px-1"
 						type="submit"

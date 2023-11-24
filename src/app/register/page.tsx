@@ -10,23 +10,13 @@ import {
 	email,
 	minLength,
 	object,
-	required,
 	string,
-	custom,
 } from "valibot";
 import { Input } from "./Input";
 import Logo from "../../assets/brandLogo.jpg";
 import Link from "next/link";
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
-
-
-/* type inputState = {
-	value: string;
-	isError: boolean;
-	blured: boolean;
-	valid: boolean;
-}; */
 
 const RegisterSchema = object({
 	name: string([minLength(3, "minimo 3 caracteres")]),
@@ -44,8 +34,6 @@ export default function Register() {
 	const {
 		register,
 		handleSubmit,
-		formState,
-		getValues,
 		setError,
 
 		formState: { errors, isSubmitted },
@@ -62,7 +50,6 @@ export default function Register() {
 	});
 
 	const onSubmit: SubmitHandler<InputVali<typeof RegisterSchema>> = (data) => {
-		console.log("en handleSubmit, onSubmit", data);
 		if (data.password !== data.repitedPassword) {
 			setError("repitedPassword", {
 				message: "Las contraseñas no coinciden",
@@ -78,16 +65,6 @@ export default function Register() {
 		};
 
 		const submitRegister = async () => {
-			console.log("bodyData: ", bodyData);
-			// fetch("https://garden-wise-app.fly.dev/api/register", {
-			// 		method: "POST",
-			// 	headers: {
-			// 		"content-type":"aplication/json",
-			// 	},
-			// 	body:JSON.stringify(bodyData) // a cambiar cuando se tenga los keys requeridos en el endpoint
-			// 	})
-			// 	.then(res => res.json())
-			// 	.then(data => console.log("data",data))
       try {
 				const response = await axios.post("https://garden-wise-app.fly.dev/api/register", {
 					name:name,
@@ -99,12 +76,8 @@ export default function Register() {
 							"Content-Type":"aplication/json",
 						}
 				})
-		
 					const data= await response.data
-					console.log("data",data)
-					console.log("data.status : ", data.status)
 					if (data.status === "success") {
-						console.log("en success");
 
 						router.push("/login");
 					}
@@ -114,55 +87,6 @@ export default function Register() {
 			}finally {
 				setLoading(false)
 			}
-			 
-
-				/* axios.post("https://garden-wise-app.fly.dev/api/register", {
-					name:name,
-					lastname:lastName,
-					email:email,
-					password: password 
-				}, {
-				headers: {
-					"Content-Type":"aplication/json",
-				}})
-				.then(res => res.data)
-				.then(data => {
-					console.log("data",data)
-					console.log("data.status : ", data.status)
-					if (data.status === "success") {
-						console.log("en success");
-
-						router.push("/login");
-					}
-				})
-				.catch((error) => { console.log(error)})
-				.finally( 
-					setLoading(false)
-				 ) */
-
-			/* try {
-				setLoading(true)
-				const response = await fetch("https://garden-wise-app.fly.dev/api/register", {
-					method: "POST",
-					headers: {
-						"Content-Type":"aplication/json",
-					},
-					body:JSON.stringify(bodyData) // a cambiar cuando se tenga los keys requeridos en el endpoint
-				})
-				const requestedData = await response.json()
-				console.info("userData: ", requestedData)
-				if (requestedData.status === "succsess") {
-					console.log("en success");
-					console.info("userData SUCCSESS: ", requestedData);
-					router.push("/plants");
-				}
-				setUserData(requestedData);
-			} catch (err) {
-          console.warn("ERR: ", err)
-			}
-			finally {
-				setLoading(false)
-			} */
 		}
 		submitRegister()
 

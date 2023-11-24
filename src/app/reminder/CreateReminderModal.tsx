@@ -12,7 +12,6 @@ export default function CreateReminderModal({setOpenModal, getReminders}:any) {
   const { userState, logOutUser} = useContext(AuthContext);
   const [plants, setPlants] = useState<[any] | []>([])
   const router = useRouter();
-  console.log("userState en create reminder: ", userState)
 
 useEffect(() => {
 
@@ -34,7 +33,7 @@ useEffect(() => {
 		}) 
 	}
 }, []);
-  console.log("plants: ", plants)
+
 	const ReminderSchema = object({
 		name: string([minLength(1)]),
 		frequency: string([minLength(1)]),
@@ -67,8 +66,6 @@ useEffect(() => {
 
 
 	const onSubmit =  (data:any) => {
-		console.log(parseInt(data.plant_id))
-		console.log("dataForm: ", data)
 		if (data.name === "" || data.plant_id === "" || data.frequency === "") {
 
 		}
@@ -82,7 +79,6 @@ useEffect(() => {
 			plant_id: parseInt(data.plant_id)
 		}
 
-		console.log(formData);
 		
 		axios.post("https://garden-wise-app.fly.dev/api/reminder", formData, {
 			headers: {
@@ -121,8 +117,6 @@ useEffect(() => {
 		const valores = getValues()
 		console.log("valores: ", valores)
 		console.log("onError data: ",data)
-		console.log("fomrData: ", getValues())
-		console.log("typeof valores.plant_id",typeof valores.plant_id)
 	}
 
 

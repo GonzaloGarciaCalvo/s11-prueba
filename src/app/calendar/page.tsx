@@ -53,25 +53,11 @@ if (typeof window !== 'undefined') {
 		axiosInstance
       .get("/reminder/")
       .then((response) => {
-				console.log("getReminders: ", response.data)
           setReminders(response.data.Reminder)
       })
       .catch((error) => {
           console.error("Error al obtener datos de plantas:", error);
       });
-			/* fetch("/reminder/", {
-				method:"GET",
-				headers: {
-				"Content-Type": "application/json",
-				"Authorization":`Bearer ${userState.token}`
-			  }
-		  })
-      .then((res) => console.log("res",res.json()))
-          //setReminders(response.json().Reminder)
-      .then(data => console.log("data: ", data))
-      .catch((error) => {
-          console.error("Error al obtener datos de plantas:", error);
-      }); */
 	}
 	
   let days = eachDayOfInterval({
